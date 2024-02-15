@@ -29,7 +29,7 @@ const activationState = Object.freeze({
 // Expected messages to the popup are the results of the pattern detection from the content script.
 brw.runtime.onMessage.addListener(
     function (message, sender, sendResponse) {
-        // Pass the message to the corresponding method of the `ExtensionPopup` component.
+        // Pass the message to the corresponding method of the ExtensionPopup component.
         document.querySelector("extension-popup").handleMessage(message, sender, sendResponse);
     }
 );
@@ -92,7 +92,7 @@ export class ExtensionPopup extends LitElement {
         if ("countVisible" in message) {
             // Check if the message was sent by the active tab from the current window.
             if (sender.tab.active && (await getCurrentTab()).windowId === sender.tab.windowId) {
-                // Set the `results` property of the popup to the data from the message.
+                // Set the results property of the popup to the data from the message.
                 this.results = message;
             }
         }
@@ -100,7 +100,7 @@ export class ExtensionPopup extends LitElement {
 
     /**
      * From the Lit documentation (https://lit.dev/docs/components/lifecycle/):
-     * "Called after the element's DOM has been updated the first time, immediately before `updated()` is called.".
+     * "Called after the element's DOM has been updated the first time, immediately before updated() is called.".
      * This function is used to load and set the activation state and results.
      * Since asynchronous methods are used for this, this is not done in the constructor.
      */
@@ -440,7 +440,7 @@ export class ShowPatternButtons extends LitElement {
     ];
 
     /**
-     * Function to extract only the visible elements from the `results` dictionary.
+     * Function to extract only the visible elements from the results dictionary.
      */
     extractVisiblePatterns() {
         // Initialize the variable with an empty array.
@@ -462,19 +462,19 @@ export class ShowPatternButtons extends LitElement {
     }
 
     /**
-     * Get the index of an element in the `_visiblePatterns` array by its pattern highlighter ID.
+     * Get the index of an element in the _visiblePatterns array by its pattern highlighter ID.
      * @param {number} phid The pattern highlighter ID.
-     * @returns {number|-1} The index of the element with the `phid` in the `_visiblePatterns` array
-     * or `-1` if the element is not in the array.
+     * @returns {number|-1} The index of the element with the phid in the _visiblePatterns array
+     * or -1 if the element is not in the array.
      */
     getIndexOfPatternId(phid) {
-        // Create an array of IDs from the `_visiblePatterns` and get the index of the passed `phid`.
+        // Create an array of IDs from the _visiblePatterns and get the index of the passed phid.
         return this._visiblePatterns.map(pattern => pattern.phid).indexOf(phid);
     }
 
     /**
      * Show the next or previous pattern element on the website.
-     * @param {number} step `x` for the next pattern or `-x` for the previous pattern.
+     * @param {number} step x for the next pattern or -x for the previous pattern.
      */
     async showPattern(step) {
         /**
@@ -485,7 +485,7 @@ export class ShowPatternButtons extends LitElement {
         if (!this._currentPatternId) {
             if (step > 0) {
                 // If one of the next elements should be shown,
-                // set the index to `0`.
+                // set the index to 0.
                 idx = 0;
             } else {
                 // If one of the previous elements should be shown,
@@ -496,16 +496,16 @@ export class ShowPatternButtons extends LitElement {
             // If an element has already been shown, use its index as a starting point.
             idx = this.getIndexOfPatternId(this._currentPatternId);
             if (idx === -1) {
-                // If the element is no longer present in the array, set the index to `0`.
+                // If the element is no longer present in the array, set the index to 0.
                 idx = 0;
             } else {
-                // Add the passed `step` parameter to the index.
+                // Add the passed step parameter to the index.
                 idx += step;
             }
         }
         if (idx >= this._visiblePatterns.length) {
             // If the new index is greater/equal than the number of elements in the array,
-            // set it to `0`.
+            // set it to 0.
             idx = 0;
         } else if (idx < 0) {
             // If the new index is smaller than 0,
@@ -514,7 +514,7 @@ export class ShowPatternButtons extends LitElement {
         }
         // Set the ID of the currently shown element to the ID of the element at the new index.
         this._currentPatternId = this._visiblePatterns[idx].phid;
-        // Send a message to the content script to show the element with the ID of `_currentPatternId`.
+        // Send a message to the content script to show the element with the ID of _currentPatternId.
         await brw.tabs.sendMessage((await getCurrentTab()).id, { "showElement": this._currentPatternId });
     }
 
@@ -561,7 +561,7 @@ export class ShowPatternButtons extends LitElement {
 
     /**
      * Function to generate the HTML of the number of the currently shown pattern element
-     * @returns {html} HTML of the number (`index + 1`) of the currently shown pattern element
+     * @returns {html} HTML of the number (index + 1) of the currently shown pattern element
      */
     getCurrentPatternNumber() {
         // Only generate a text when a pattern element is shown.
@@ -570,7 +570,7 @@ export class ShowPatternButtons extends LitElement {
             let idx = this.getIndexOfPatternId(this._currentPatternId);
             // Only generate a text when the element is still present in the array.
             if (idx !== -1) {
-                // Generate the HTML text with the number (`index + 1`).
+                // Generate the HTML text with the number (index + 1).
                 return `${idx + 1}`;
             }
         }
@@ -579,12 +579,12 @@ export class ShowPatternButtons extends LitElement {
 
     /**
      * From the Lit documentation (https://lit.dev/docs/components/lifecycle/):
-     * "Called before `update()` to compute values needed during the update.".
-     * Used here to react to changes in the `results` before the component is rendered.
+     * "Called before update() to compute values needed during the update.".
+     * Used here to react to changes in the results before the component is rendered.
      * @param {Map} changedProperties
      */
     willUpdate(changedProperties) {
-        // Extract the visible elements from the `results`, if the `results` have changed.
+        // Extract the visible elements from the results, if the results have changed.
         if (changedProperties.has("results")) {
             this.extractVisiblePatterns();
         }
@@ -603,9 +603,9 @@ export class ShowPatternButtons extends LitElement {
         return html`
         <div>
             <h2>${brw.i18n.getMessage("headingShowPattern")}</h2>
-            <span class="button" @click=${this.showPreviousPattern}>⏮️</span>
+            <span class="button" @click=${this.showPreviousPattern}>👈🏻</span>
             <span>${brw.i18n.getMessage("showPatternState", [this.getCurrentPatternNumber(), this.results.countVisible.toString()])}</span>
-            <span class="button" @click=${this.showNextPattern}>⏭️</span>
+            <span class="button" @click=${this.showNextPattern}>👉🏻</span>
             ${this.getCurrentPatternText()}
         </div>
       `;
