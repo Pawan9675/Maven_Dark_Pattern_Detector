@@ -40,7 +40,7 @@ export const patternLinkStyles = css`
 
 export const actionButtonStyles = css`
     div span {
-        color: #217284;
+        color: #34c13b;
         font-weight: bold;
         cursor: pointer;
         text-decoration: none;
@@ -114,7 +114,7 @@ export const onOffSwitchStyles = css`
         padding: 0;
         line-height: 30px;
         font-size: 14px;
-        color: white;
+        color: #EFF396;
         font-family: Trebuchet, Arial, sans-serif;
         font-weight: bold;
         box-sizing: border-box;
@@ -123,7 +123,7 @@ export const onOffSwitchStyles = css`
     .onoffswitch-inner:before {
         content: "${unsafeCSS(brw.i18n.getMessage("buttonOnState"))}";
         padding-left: 10px;
-        background-color: #34A7C1;
+        background-color: #34c13b;
         color: #FFFFFF;
     }
 
@@ -144,7 +144,7 @@ export const onOffSwitchStyles = css`
         top: 0;
         bottom: 0;
         right: 56px;
-        border: 2px solid #000000;
+        border: 2px solid #EFF396;
         border-radius: 50px;
     }
 
@@ -158,12 +158,12 @@ export const onOffSwitchStyles = css`
 
     @media (prefers-color-scheme: dark) { 
         label {
-            border: 2px solid #FFFFFF;
+            border: 2px solid #EFF396;
         }
     
         .onoffswitch-inner:before {
-            background-color: #33bfde;
-            color: #000000;
+            background-color: #34c13b;
+            color: #EFF396;
         }
     }
 `;
